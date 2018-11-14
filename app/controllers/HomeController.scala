@@ -1,15 +1,19 @@
 package controllers
 
+import be.objectify.deadbolt.scala.DeadboltActions
 import javax.inject._
-
 import play.api.mvc._
+
+import scala.concurrent.Future
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(cc: ControllerComponents) (implicit assetsFinder: AssetsFinder)
+class HomeController @Inject()(cc: ControllerComponents, deadbolt: DeadboltActions) (implicit assetsFinder: AssetsFinder)
   extends AbstractController(cc) {
 
   /**
@@ -18,8 +22,8 @@ class HomeController @Inject()(cc: ControllerComponents) (implicit assetsFinder:
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+  def index: EssentialAction = deadbolt.SubjectPresent()() { implicit request =>
+    Future(Ok(views.html.index("Your new application is ready.")))
   }
 
 }

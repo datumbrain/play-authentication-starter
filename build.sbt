@@ -1,4 +1,4 @@
-name := """play-scala-starter-example"""
+name := """play-authentication-starter"""
 
 version := "1.0-SNAPSHOT"
 
@@ -13,3 +13,7 @@ crossScalaVersions := Seq("2.11.12", "2.12.7")
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 libraryDependencies += "com.h2database" % "h2" % "1.4.197"
+
+libraryDependencies ++= Seq(
+  "be.objectify" %% "deadbolt-scala" % "2.6.1"
+)

@@ -1,8 +1,8 @@
 package controllers
 
 import javax.inject._
-
 import akka.actor.ActorSystem
+import be.objectify.deadbolt.scala.DeadboltActions
 import play.api.mvc._
 
 import scala.concurrent.duration._
@@ -24,7 +24,7 @@ import scala.concurrent.{ExecutionContext, Future, Promise}
  * a blocking API.
  */
 @Singleton
-class AsyncController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class AsyncController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem, deadboltActions: DeadboltActions)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   /**
    * Creates an Action that returns a plain text message after a delay
@@ -46,4 +46,7 @@ class AsyncController @Inject()(cc: ControllerComponents, actorSystem: ActorSyst
     promise.future
   }
 
+  def tempAction: EssentialAction = deadboltActions.Restrict(List(Array("ADMIN", "SUPER_USER"))) { implicit request =>
+    // treat as normal action
+  }
 }
