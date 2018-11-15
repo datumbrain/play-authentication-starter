@@ -46,7 +46,7 @@ class AsyncController @Inject()(cc: ControllerComponents, actorSystem: ActorSyst
     promise.future
   }
 
-  def tempAction: EssentialAction = deadboltActions.Restrict(List(Array("ADMIN", "SUPER_USER"))) { implicit request =>
-    // treat as normal action
-  }
+//  def tempAction: EssentialAction = deadboltActions.Restrict(List(Array("ADMIN", "SUPER_USER"))) { implicit request =>
+//    // treat as normal action
+//  }
 }
