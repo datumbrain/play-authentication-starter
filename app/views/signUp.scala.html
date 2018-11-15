@@ -1,0 +1,23 @@
+@(form: Form[models.forms.UserForm.User], postUrl: Call)(implicit request: MessagesRequestHeader)
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUp</title>
+</head>
+<body>
+
+@helper.form(action = postUrl) {
+
+@helper.inputText(form("firstName"))
+
+@helper.inputText(form("lastName"))
+
+@helper.inputText(form("email"))
+
+@helper.inputPassword(form("password"))
+
+<button>Create widget</button>
+}
+</body>
+</html>
