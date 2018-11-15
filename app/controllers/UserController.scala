@@ -71,12 +71,13 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
     implicit request =>
       for {
         user <- userrep.get(request.session.get("email").getOrElse("Not Found"))
-      } yield
+      } yield {
         user
           .map {
             u => Ok(views.html.restrictedPage(u))
-            )
-            .getOrElse(Forbidden("Not allowed!")
           }
+          .getOrElse(Forbidden("Not allowed!")
+        )
+      }
   }
 }
