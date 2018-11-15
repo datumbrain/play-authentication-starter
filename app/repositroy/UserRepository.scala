@@ -42,7 +42,7 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   private val table = TableQuery[UserTable]
 
-  def create(firstName: String, lastName: String, email: String, password: String, userRole: String,  authenticated: Boolean) = db.run {
+  def create(firstName: String, lastName: String, email: String, password: String, userRole: String, authenticated: Boolean) = db.run {
     table returning table.map(_.id) += User(id = 0L, firstName = firstName, lastName = lastName, email = email, password = password, userRole = userRole, authenticated = authenticated)
   }
 
