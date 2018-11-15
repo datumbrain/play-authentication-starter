@@ -1,20 +1,20 @@
 package controllers
 
+import akka.actor.ActorSystem
+import be.objectify.deadbolt.scala.DeadboltActions
 import javax.inject._
 import play.api.data.Form
 import play.api.mvc._
 import repository.UserRepository
 import services.Counter
-import be.objectify.deadbolt.scala.DeadboltActions
-import akka.actor.ActorSystem
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
 class UserController @Inject()(userrep: UserRepository, components: MessagesControllerComponents, cc: ControllerComponents,
                                counter: Counter, actorSystem: ActorSystem, deadboltActions: DeadboltActions)(implicit exec: ExecutionContext)
-                                extends MessagesAbstractController(components) {
+  extends MessagesAbstractController(components) {
 
   import models.forms.UserForm._
   import models.forms.UserLoginForm._
@@ -23,7 +23,7 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
   private val postUrlLogin = routes.UserController.loginPage()
 
   /*THESE ARE THE ACTIONS FOR SIGN UP*/
-  def signUpSave = Action { implicit request: MessagesRequest[AnyContent] =>
+  def signUpSave = Action { implicit request =>
     val errorFunction = { formWithErrors: Form[User] =>
       BadRequest(views.html.signUp(formWithErrors, postUrlSignUp))
     }
@@ -38,36 +38,38 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
     formValidationResult.fold(errorFunction, successFunction)
   }
 
-  def signUp = Action { implicit request: MessagesRequest[AnyContent] =>
+  def signUp = Action { implicit request =>
     Ok(views.html.signUp(form, postUrlSignUp))
   }
 
   /*THESE ARE THE ACTIONS FOR Login*/
-  def loginPage = Action { implicit request: MessagesRequest[AnyContent] =>
-
+  def loginPage = Action.async { implicit request =>
     val errorFunction = { formWithErrors: Form[UserLogin] =>
-      BadRequest(views.html.login(formWithErrors, postUrlLogin))
+      Future.successful(BadRequest(views.html.login(formWithErrors, postUrlLogin)))
     }
 
     val successFunction = { userlogin: UserLogin =>
       for {
         user <- userrep.get(userlogin.email)
       } yield {
-        val user: User = user
-        Redirect(routes.UserController.userinfo())
+        user
+          .map {
+            u => Redirect(routes.UserController.userInfo()).withSession(("userId", u.id.toString))
+          }
+          .getOrElse(Forbidden("Not allowed!"))
       }
-      Redirect(routes.HomeController.index())
     }
 
     val formValidationResult = form.bindFromRequest
     formValidationResult.fold(errorFunction, successFunction)
   }
 
-  def login = Action { implicit request: MessagesRequest[AnyContent] =>
+  def login = Action { implicit request =>
     Ok(views.html.signUp(loginform, postUrlLogin))
   }
 
-  def userinfo : EssentialAction = deadboltActions.Restrict(List(Array("USER"))) { implicit request: MessagesRequest[AnyContent] =>
-    Ok(views.html.restrictedPage(loginform, postUrlLogin))
+  def userInfo: EssentialAction = deadboltActions.Restrict(List(Array("USER"))) {
+    implicit request =>
+      Ok(views.html.restrictedPage(loginform, postUrlLogin))
   }
 }

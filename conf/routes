@@ -15,3 +15,4 @@ GET     /assets/*file               controllers.Assets.versioned(file)
 # user controller end points
 POST    /signUpSave                 controllers.UserController.signUpSave
 GET     /signUp                     controllers.UserController.signUp
+GET     /userInfo                   controllers.UserController.userInfo
