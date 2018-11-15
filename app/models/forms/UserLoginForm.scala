@@ -1,9 +1,9 @@
 package models.forms
 
-object UserForm {
+object UserLoginForm {
 
-  import play.api.data.Forms._
   import play.api.data.Form
+  import play.api.data.Forms._
 
   /**
     * A form processing DTO that maps to the form below.
@@ -11,21 +11,17 @@ object UserForm {
     * Using a class specifically for form binding reduces the chances
     * of a parameter tampering attack and makes code clearer.
     */
-  case class User(firstName: String, lastName: String, email: String, password: String);
-
-
+  case class UserLogin(email: String, password: String);
   /**
     * The form definition for the "create a widget" form.
     * It specifies the form fields and their types,
     * as well as how to convert from a Data to form data and vice versa.
     */
-  val loginform = Form(
+  val form = Form(
     mapping(
-      "firstName" -> nonEmptyText,
-      "lastName" -> nonEmptyText,
       "email" -> email,
       "password" -> nonEmptyText
 
-    )(User.apply)(User.unapply)
+    )(UserLogin.apply)(UserLogin.unapply)
   )
 }

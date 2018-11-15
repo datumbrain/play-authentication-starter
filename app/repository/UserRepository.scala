@@ -43,8 +43,8 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     table returning table.map(_.id) += User(id = 0L, firstName = firstName, lastName = lastName, email = email, password = password, userRole = userRole)
   }
 
-  def get(id: Long) = db.run {
-    table.filter(_.id === id).result.headOption
+  def get(email: String) = db.run {
+    table.filter(_.email === email).result.headOption
   }
 
   def list(): Future[Seq[User]] = db.run {
