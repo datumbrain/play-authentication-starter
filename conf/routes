@@ -12,5 +12,6 @@ GET     /message                    controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)
 
-POST    /signUpSave                 controllers.CountController.signUpSave
-GET     /signUp                     controllers.CountController.signUp
+# user controller end points
+POST    /signUpSave                 controllers.UserController.signUpSave
+GET     /signUp                     controllers.UserController.signUp
