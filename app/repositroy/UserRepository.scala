@@ -34,16 +34,14 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     // mapped to Users > userRole in database
     def userRole = column[String]("userRole")
 
-    // mapped to Users > created at in database
-    def authenticated = column[Boolean]("authenticated")
 
-    def * = (id, firstName, lastName, email, password, userRole, authenticated) <> ((User.apply _).tupled, User.unapply)
+    def * = (id, firstName, lastName, email, password, userRole) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val table = TableQuery[UserTable]
 
   def create(firstName: String, lastName: String, email: String, password: String, userRole: String, authenticated: Boolean) = db.run {
-    table returning table.map(_.id) += User(id = 0L, firstName = firstName, lastName = lastName, email = email, password = password, userRole = userRole, authenticated = authenticated)
+    table returning table.map(_.id) += User(id = 0L, firstName = firstName, lastName = lastName, email = email, password = password, userRole = userRole)
   }
 
   def get(id: Long) = db.run {
