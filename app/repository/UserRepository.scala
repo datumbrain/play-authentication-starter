@@ -1,4 +1,4 @@
-package repositroy
+package repository
 
 import javax.inject.{Inject, Singleton}
 
@@ -34,13 +34,12 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     // mapped to Users > userRole in database
     def userRole = column[String]("userRole")
 
-
     def * = (id, firstName, lastName, email, password, userRole) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val table = TableQuery[UserTable]
 
-  def create(firstName: String, lastName: String, email: String, password: String, userRole: String, authenticated: Boolean) = db.run {
+  def create(firstName: String, lastName: String, email: String, password: String, userRole: String) = db.run {
     table returning table.map(_.id) += User(id = 0L, firstName = firstName, lastName = lastName, email = email, password = password, userRole = userRole)
   }
 

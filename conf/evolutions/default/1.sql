@@ -6,11 +6,11 @@ firstName varchar(255) NOT NULL,
 lastName varchar(255) NOT NULL,
 email varchar(255) NOT NULL UNIQUE,
 password varchar(255) NOT NULL,
-userRole varchar(255) NOT NULL,
+userRole varchar(255) NOT NULL
 );
 
-INSERT INTO Users(LastName, FirstName, Password, Email, userRole, authenticated) VALUES ('Saad', 'Ali', 'asdasdasd', 'spadsdditcom', 'USER');
-INSERT INTO Users(LastName, FirstName, Password, Email, userRole, authenticated) VALUES ('Fahad', 'Siddiqui', 'asdasdasd', 'xyz@abc.com', 'USER');
+INSERT INTO Users(LastName, FirstName, Password, Email, userRole) VALUES ('Saad', 'Ali', 'asdasdasd', 'spadsdditcom', 'USER');
+INSERT INTO Users(LastName, FirstName, Password, Email, userRole) VALUES ('Fahad', 'Siddiqui', 'asdasdasd', 'xyz@abc.com', 'USER');
 
 
 # --- !Downs
