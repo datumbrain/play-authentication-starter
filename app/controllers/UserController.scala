@@ -70,14 +70,13 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
   def userInfo: EssentialAction = deadboltActions.Restrict(List(Array("USER"))) {
     implicit request =>
       for {
-        user <- userrep.get(request.session.get("email").getOrElse("Not Found"))
+        user <- userrep.get( request.session.get("email").getOrElse("Doesn't exist.") )
       } yield {
         user
           .map {
             u => Ok(views.html.restrictedPage(u))
           }
-          .getOrElse(Forbidden("Not allowed!")
-        )
+          .getOrElse(Forbidden("Not allowed!"))
       }
   }
 }
