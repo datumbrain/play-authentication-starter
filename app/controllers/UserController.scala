@@ -75,7 +75,8 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
         user
           .map {
             u => Ok(views.html.restrictedPage(u))
-        )
+            )
             .getOrElse(Forbidden("Not allowed!")
-      }
+          }
   }
+}
