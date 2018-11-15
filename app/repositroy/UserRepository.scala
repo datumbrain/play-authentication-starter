@@ -54,11 +54,9 @@ class UserRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     table.result
   }
 
-//  def getJobId(generatedId: String) = db.run {
-//    table.filter(_.generatedId === generatedId).map(_.id).result.headOption
-//  }
-//
-//  def getParams(generatedId: String) = db.run {
-//    table.filter(_.generatedId === generatedId).map(_.params).result.headOption
-//  }
+  def updatePassword(id: Long, password: String) = db.run {
+    table.filter { row =>
+      row.id === id
+    }.map(r => password).update(password)
+  }
 }
