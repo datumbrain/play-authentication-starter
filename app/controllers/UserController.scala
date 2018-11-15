@@ -67,7 +67,7 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
     Ok(views.html.login(loginform, postUrlLogin))
   }
 
-  def userInfo: EssentialAction = deadboltActions.Restrict(List(Array("USER"))) {
+  def userInfo: EssentialAction = deadboltActions.Restrict(List(Array("USER")))() {
     implicit request =>
       for {
         user <- userrep.get( request.session.get("email").getOrElse("Doesn't exist.") )
