@@ -16,3 +16,7 @@ GET     /assets/*file               controllers.Assets.versioned(file)
 POST    /signUpSave                 controllers.UserController.signUpSave
 GET     /signUp                     controllers.UserController.signUp
 GET     /userInfo                   controllers.UserController.userInfo
+
+GET     /login                      controllers.UserController.login
+POST    /loginPage                  controllers.UserController.loginPage
+POST    /restrictedPage             controllers.UserController.userInfo

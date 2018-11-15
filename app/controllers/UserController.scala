@@ -24,22 +24,22 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
 
   /*THESE ARE THE ACTIONS FOR SIGN UP*/
   def signUpSave = Action { implicit request =>
-    val errorFunction = { formWithErrors: Form[User] =>
+    val errorFunction = { formWithErrors: Form[UserSignUp] =>
       BadRequest(views.html.signUp(formWithErrors, postUrlSignUp))
     }
 
-    val successFunction = { user: User =>
+    val successFunction = { user: UserSignUp =>
       val id = userrep.create(user.firstName, user.lastName, user.email, user.password, "USER")
 
       Redirect(routes.HomeController.index())
     }
 
-    val formValidationResult = form.bindFromRequest
+    val formValidationResult = signupform.bindFromRequest
     formValidationResult.fold(errorFunction, successFunction)
   }
 
   def signUp = Action { implicit request =>
-    Ok(views.html.signUp(form, postUrlSignUp))
+    Ok(views.html.signUp(signupform, postUrlSignUp))
   }
 
   /*THESE ARE THE ACTIONS FOR Login*/
@@ -54,22 +54,28 @@ class UserController @Inject()(userrep: UserRepository, components: MessagesCont
       } yield {
         user
           .map {
-            u => Redirect(routes.UserController.userInfo()).withSession(("userId", u.id.toString))
+            u => Redirect(routes.UserController.userInfo()).withSession(("email", u.email.toString))
           }
           .getOrElse(Forbidden("Not allowed!"))
       }
     }
-
-    val formValidationResult = form.bindFromRequest
+    val formValidationResult = loginform.bindFromRequest
     formValidationResult.fold(errorFunction, successFunction)
   }
 
   def login = Action { implicit request =>
-    Ok(views.html.signUp(loginform, postUrlLogin))
+    Ok(views.html.login(loginform, postUrlLogin))
   }
 
   def userInfo: EssentialAction = deadboltActions.Restrict(List(Array("USER"))) {
     implicit request =>
-      Ok(views.html.restrictedPage(loginform, postUrlLogin))
+      for {
+        user <- userrep.get(request.session.get("email").getOrElse("Not Found"))
+      } yield
+        user
+          .map {
+            u => Ok(views.html.restrictedPage(u))
+        )
+            .getOrElse(Forbidden("Not allowed!")
+      }
   }
-}

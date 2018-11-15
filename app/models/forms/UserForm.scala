@@ -11,7 +11,7 @@ object UserForm {
     * Using a class specifically for form binding reduces the chances
     * of a parameter tampering attack and makes code clearer.
     */
-  case class User(firstName: String, lastName: String, email: String, password: String);
+  case class UserSignUp(firstName: String, lastName: String, email: String, password: String);
 
 
   /**
@@ -19,13 +19,13 @@ object UserForm {
     * It specifies the form fields and their types,
     * as well as how to convert from a Data to form data and vice versa.
     */
-  val loginform = Form(
+  val signupform = Form(
     mapping(
       "firstName" -> nonEmptyText,
       "lastName" -> nonEmptyText,
       "email" -> email,
       "password" -> nonEmptyText
 
-    )(User.apply)(User.unapply)
+    )(UserSignUp.apply)(UserSignUp.unapply)
   )
 }

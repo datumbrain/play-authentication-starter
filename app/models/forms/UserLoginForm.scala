@@ -17,7 +17,7 @@ object UserLoginForm {
     * It specifies the form fields and their types,
     * as well as how to convert from a Data to form data and vice versa.
     */
-  val form = Form(
+  val loginform = Form(
     mapping(
       "email" -> email,
       "password" -> nonEmptyText
