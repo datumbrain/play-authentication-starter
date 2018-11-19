@@ -1,0 +1,18 @@
+@(user: models.User)(implicit assetsFinder: AssetsFinder)
+
+@main(title = "Restricted Page - User Information", assetsFinder) {
+    <table>
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@user.email</td>
+            <td>@user.userRole</td>
+        </tr>
+        </tbody>
+    </table>
+}

@@ -1,24 +1,39 @@
-@*
- * This template is called from the `index` template. This template
- * handles the rendering of the page header and body tags. It takes
- * three arguments, a `String` for the title of the page and an `Html`
- * object to insert into the body of the page and an `AssetFinder`
- * to define to reverse route static assets.
- *@
 @(title: String, assetsFinder: AssetsFinder)(content: Html)
 
-<!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        @* Here's where we render the page title `String`. *@
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@assetsFinder.path("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@assetsFinder.path("images/favicon.png")">
-        <script src="@assetsFinder.path("javascripts/hello.js")" type="text/javascript"></script>
+        <link rel="stylesheet" media="screen" href="@assetsFinder.path("css/bootstrap.min.css")">
+        <link rel="stylesheet" media="screen" href="@assetsFinder.path("css/polymer.css")">
+        <script src="@assetsFinder.path("js/jquery-3.3.1.min.js")" type="text/javascript"></script>
+        <script src="@assetsFinder.path("js/bootstrap.min.js")" type="text/javascript"></script>
     </head>
     <body>
-        @* And here's where we render the `Html` object containing
-         * the page content. *@
-        @content
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="@routes.HomeController.index">Play Skeleton App</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="@routes.HomeController.index">Home</a>
+                        <a class="nav-item nav-link" href="@routes.UserController.login">Login</a>
+                        <a class="nav-item nav-link" href="@routes.UserController.userInfo">Restricted Page</a>
+                        <a class="nav-item nav-link" href="@routes.UserController.logout">Logout</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="main-content">
+                @content
+            </div>
+        </main>
+
+        <footer class="footer bg-dark text-light">
+            © Play Skeleton App. All rights reserved.
+        </footer>
     </body>
 </html>

@@ -1,0 +1,59 @@
+@(form: Form[models.forms.UserLoginForm.UserLogin], postUrl: Call)(implicit request: MessagesRequestHeader, assetsFinder: AssetsFinder)
+
+@main(title = "Login Page", assetsFinder) {
+    @helper.form(action = postUrl) {
+        @helper.inputText(form("email"), 'id -> "email")
+        @helper.inputPassword(form("password"), 'id -> "password")
+        <button class="btn-primary">Login</button>
+    }
+
+    <button id="sign-up-btn" class="btn-primary">Sign Up</button>
+    <p id="user-message" class="text-danger"></p>
+    <a href="@routes.UserController.forgotPassword()">Forgot Password?</a>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        function redirectWithMessage(msg) {
+            let payload = {
+                message: msg
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/message',
+                data: JSON.stringify(payload),
+                contentType: 'application/json'
+            });
+        }
+
+
+        $('#sign-up-btn').click(function() {
+            let email = $('#email').val();
+            let password = $('#password').val();
+
+            let payload = {
+                'email': email,
+                'password': password
+            }
+
+            let onSuccess = function(data) {
+                $("#user-message").text(data.message);
+            };
+
+            let onFailure = function(data) {
+                // failed action
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/signUpSave',
+                data: JSON.stringify(payload),
+                contentType: 'application/json',
+                success: onSuccess,
+                error: onFailure
+            });
+        });
+    });
+</script>

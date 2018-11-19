@@ -1,13 +1,25 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
+# Default Index Page
+GET         /                             controllers.HomeController.index
 
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+# UserController Endpoints
+POST        /signUpSave                   controllers.UserController.signUpSave
+GET         /userInfo                     controllers.UserController.userInfo
 
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(file)
+GET         /login                        controllers.UserController.login
+GET         /logout                       controllers.UserController.logout
+POST        /loginPage                    controllers.UserController.loginPage
+POST        /restrictedPage               controllers.UserController.userInfo
+
+# Email validation endpoints
+GET         /:token/validationlink        controllers.UserController.validationLink(token)
+GET         /validateemail                controllers.UserController.updatevalidation
+
+# Forgot Password Endpoints
+GET         /forgotPassword               controllers.UserController.forgotPassword
+POST        /getForgotEmail               controllers.UserController.getForgotEmail
+GET         /:token/resetlink             controllers.UserController.resetlink(token)
+GET         /resetpassword                controllers.UserController.resetpassword
+POST        /savepassword                 controllers.UserController.savePassword
+
+# Assets
+GET         /assets/*file                 controllers.Assets.versioned(file)

@@ -14,7 +14,7 @@ class AuthenticationHandler extends DeadboltHandler {
   override def getDynamicResourceHandler[A](request: Request[A]): Future[Option[DynamicResourceHandler]] = Future(None)
 
   override def getSubject[A](request: AuthenticatedRequest[A]): Future[Option[Subject]] = {
-    request.session.get("userId").map(e => Future(Some(AuthenticationSubject(e, request.session.get("roles").get.split(",").map(r => AuthenticationRole(r.trim)).toList, List.empty))))
+    request.session.get("email").map(e => Future(Some(AuthenticationSubject(e, request.session.get("roles").get.split(",").map(r => AuthenticationRole(r.trim)).toList, List.empty))))
       .getOrElse(Future(None))
   }
 
